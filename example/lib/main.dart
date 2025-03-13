@@ -92,22 +92,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Column(
         children: [
-          WindowsStatusBarWidget(
-            windowsControlButtons: [
-              WindowsStatusBarButton(
-                icon: Icon(
-                  Icons.ac_unit_outlined,
-                  color: Colors.red,
-                ),
-                onTap: () {},
-                iconNormal: Colors.red,
-              ),
-              WindowsStatusBarButton(
-                  icon: Icon(Icons.ac_unit_outlined), onTap: () {}),
-              WindowsStatusBarButton(
-                  icon: Icon(Icons.ac_unit_outlined), onTap: () {})
-            ],
-          ),
+          WindowsStatusBarWidget(),
           Expanded(
             child: Center(
               // Center is a layout widget. It takes a single child and positions it

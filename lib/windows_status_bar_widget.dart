@@ -4,7 +4,7 @@ import 'package:window_manager/window_manager.dart';
 
 double dcWindowsStatusBarHeight = 46.0;
 
-class WindowsStatusBarWidget extends StatelessWidget {
+class WindowsStatusBarWidget extends StatefulWidget {
   final List<Widget>? actions;
   final List<WindowsStatusBarButton>? windowsControlButtons;
   final Color? backgroundColor;
@@ -20,12 +20,56 @@ class WindowsStatusBarWidget extends StatelessWidget {
   });
 
   @override
+  State<WindowsStatusBarWidget> createState() => _WindowsStatusBarWidgetState();
+}
+
+class _WindowsStatusBarWidgetState extends State<WindowsStatusBarWidget>
+    with WindowListener {
+  bool _isMaximized = false;
+
+  @override
+  void initState() {
+    super.initState();
+    windowManager.addListener(this);
+    _checkMaximized();
+  }
+
+  @override
+  void dispose() {
+    windowManager.removeListener(this);
+    super.dispose();
+  }
+
+  @override
+  void onWindowMaximize() {
+    setState(() {
+      _isMaximized = true;
+    });
+  }
+
+  @override
+  void onWindowUnmaximize() {
+    setState(() {
+      _isMaximized = false;
+    });
+  }
+
+  Future<void> _checkMaximized() async {
+    final maximized = await windowManager.isMaximized();
+    if (mounted) {
+      setState(() {
+        _isMaximized = maximized;
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
-      height: height ?? dcWindowsStatusBarHeight,
+      height: widget.height ?? dcWindowsStatusBarHeight,
       decoration: BoxDecoration(
-          color: backgroundColor ?? Colors.white,
-          border: border ??
+          color: widget.backgroundColor ?? Colors.white,
+          border: widget.border ??
               const Border(bottom: BorderSide(width: .2, color: Colors.grey))),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -48,9 +92,9 @@ class WindowsStatusBarWidget extends StatelessWidget {
                 height: kToolbarHeight - 1,
                 child: Row(
                   children: [
-                    if (actions != null) ...actions!,
-                    if (actions == null) const Spacer(),
-                    if (windowsControlButtons == null) ...[
+                    if (widget.actions != null) ...widget.actions!,
+                    if (widget.actions == null) const Spacer(),
+                    if (widget.windowsControlButtons == null) ...[
                       WindowsStatusBarButton(
                         mouseOver:
                             Theme.of(context).colorScheme.surfaceContainer,
@@ -65,8 +109,10 @@ class WindowsStatusBarWidget extends StatelessWidget {
                       WindowsStatusBarButton(
                         mouseOver:
                             Theme.of(context).colorScheme.surfaceContainer,
-                        icon: const Icon(
-                          FluentIcons.maximize_16_regular,
+                        icon: Icon(
+                          _isMaximized
+                              ? FluentIcons.maximize_16_regular
+                              : FluentIcons.maximize_16_regular,
                           size: 14,
                         ),
                         onTap: () async {
@@ -89,12 +135,11 @@ class WindowsStatusBarWidget extends StatelessWidget {
                         },
                       )
                     ],
-                    if (windowsControlButtons != null)
-                      ...windowsControlButtons!,
+                    if (widget.windowsControlButtons != null)
+                      ...widget.windowsControlButtons!,
                   ],
                 )),
           )),
-          //const WindowButtons()
         ],
       ),
     );
