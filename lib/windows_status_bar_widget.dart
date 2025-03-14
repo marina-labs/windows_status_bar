@@ -2,7 +2,7 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:window_manager/window_manager.dart';
 
-double dcWindowsStatusBarHeight = 46.0;
+double defaultHeight = 46.0;
 
 class WindowsStatusBarWidget extends StatefulWidget {
   final List<Widget>? actions;
@@ -66,7 +66,7 @@ class _WindowsStatusBarWidgetState extends State<WindowsStatusBarWidget>
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: widget.height ?? dcWindowsStatusBarHeight,
+      height: widget.height ?? defaultHeight,
       decoration: BoxDecoration(
           color: widget.backgroundColor ?? Colors.white,
           border: widget.border ??
@@ -187,8 +187,8 @@ class _WindowsStatusBarButtonState extends State<WindowsStatusBarButton> {
           });
         },
         child: Container(
-          width: dcWindowsStatusBarHeight,
-          height: dcWindowsStatusBarHeight,
+          width: defaultHeight,
+          height: defaultHeight,
           decoration: BoxDecoration(
               color: _isHovered ? widget.mouseOver : Colors.transparent),
           child: widget.icon,
