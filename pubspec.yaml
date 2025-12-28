@@ -1,17 +1,17 @@
 name: windows_status_bar
 description: "Custom windows status bar."
-version: 0.0.6
+version: 0.0.7
 homepage:
 
 environment:
-  sdk: ^3.5.0
+  sdk: ^3.9.2
   flutter: ">=1.17.0"
 
 dependencies:
   flutter:
     sdk: flutter
   fluentui_system_icons: ^1.1.273
-  window_manager: ^0.4.3
+  window_manager: ^0.5.1
 
 dev_dependencies:
   flutter_test:
